@@ -1,7 +1,7 @@
 /*
     Práctica 5: Carga de modelos
     Amanda Balderas Arias
-    Fecha de entrega: 
+    Fecha de entrega: Domingo 15 Septiembre 2024
 
 */
 
@@ -102,7 +102,13 @@ int main( )
     
     // Load models
     Model dog((char*)"Models/RedDog.obj");
-    Model mesh((char*)"Models/mesh.obj");
+    Model basketball_hoop((char*)"Models/basketball_hoop/uploads_files_5230575_Basketball.obj");
+    Model park_brench((char*)"Models/park_brench/e9a75bc272c0_park_brench__3d_ass.obj");
+    Model sandbox((char*)"Models/sandbox/f9da2feda595_sandbox__3d_asset_0.obj");
+    Model swings((char*)"Models/swings/dcfd195f07b9_swings__3d_asset_0_.obj");
+    Model slide_for_kids((char*)"Models/slide_for_kids/047997f0b1eb_slide_for_kids__3d_.obj");
+    
+    //Model mesh((char*)"Models/mesh.obj");
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 100.0f );
     
   
@@ -129,21 +135,44 @@ int main( )
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-        // Draw the loaded model
+        // Draw the loaded model - Dog
         glm::mat4 model(1);
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         dog.Draw(shader);
         
-
-        model = glm::translate(model, glm::vec3(3.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        dog.Draw(shader);
-        
-        model = glm::translate(model, glm::vec3(2.0f, 0.0f, 0.0f));
+        // Basketball hoop
+        model = glm::translate(model, glm::vec3(0.0f, -0.4f, -2.0f));
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-        mesh.Draw(shader);
+        basketball_hoop.Draw(shader);
+        
+        // Park Brench
+        model = glm::translate(model, glm::vec3(4.0f, 0.6f, 4.0f));
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        park_brench.Draw(shader);
+
+        // Sandbox
+        model = glm::translate(model, glm::vec3(0.0f, -0.2f, -3.0f));
+        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        sandbox.Draw(shader);
+
+        // Swings
+        model = glm::translate(model, glm::vec3(0.0f, 0.4f, -2.0f));
+        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        swings.Draw(shader);
+
+        // Slide for kids
+        model = glm::translate(model, glm::vec3(0.0f, -0.1f, 2.0f));
+        model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+        glUniformMatrix4fv(glGetUniformLocation(shader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+        slide_for_kids.Draw(shader);
 
         // Swap the buffers
         glfwSwapBuffers( window );

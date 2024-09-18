@@ -105,18 +105,42 @@ int main()
 	GLfloat vertices[] =
 	{
 		// Positions            // Colors              // Texture Coords
-		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.0f, // vertice inferioir izquierdo
-		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.0f, // vertice inferior derecho 
-		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    1.0f,1.0f, // vertice superior derecho 
-		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,1.0f, // vertice supeior izquierdo
-
 		
+		// UNO
+		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.25f, // vertice inferior izquierdo 0
+		0.5f, -0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.25f,0.25f, // vertice inferior derecho  1
+		0.5f,  0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    0.25f,0.5f, // vertice superior derecho   2 
+		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.5f, // vertice supeior izquierdo   3
+		
+		// TRES
+		-0.5f, -0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.25f, // vertice inferior izquierdo 4
+		0.5f, -0.5f, -1.0f,	   1.0f, 1.0f,1.0f,		0.75f,0.25f, // vertice inferior derecho  5
+		0.5f,  0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    0.75f,0.5f, // vertice superior derecho   6
+		-0.5f,  0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice supeior izquierdo   7
+		
+		// DOS
+
+		0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,	    0.25f,0.25f, // vertice inferior izquierdo 8
+		0.5f, 0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.5f,0.25f, // vertice inferior derecho    9
+		0.5f, 0.5f, -1.0f,     1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice superior derecho     10
+		0.5f, -0.5f, -1.0f,      1.0f, 1.0f,1.0f,	    0.25f,0.5f, // vertice supeior izquierdo   11
+
 	};
 
 	GLuint indices[] =
 	{  // Note that we start from 0!
+		
+		// UNO
 		0,1,3,
-		1,2,3
+		1,2,3,
+		
+		// TRES
+		4,5,7,
+		5,6,7,
+
+		// DOS
+		8,9,11,
+		9,10,11,
 	
 	};
 
@@ -156,7 +180,7 @@ int main()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	// Diffuse map
-	image = stbi_load("images/window.png", &textureWidth, &textureHeight, &nrChannels,0);
+	image = stbi_load("images/mydice.png", &textureWidth, &textureHeight, &nrChannels,0);
 	glBindTexture(GL_TEXTURE_2D, texture1);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -211,7 +235,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// Draw the light object (using light's vertex attributes)
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 18 , GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers

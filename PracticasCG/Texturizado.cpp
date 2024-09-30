@@ -1,5 +1,5 @@
 /*
-	Práctica 6: Texturizado
+	Prï¿½ctica 6: Texturizado
 	Amanda Balderas Arias
 	Fecha de entreg: Domingo 22 de Septiembre 2024
 */

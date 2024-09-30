@@ -227,7 +227,7 @@ int main()
         // Check and call events
         glfwPollEvents();
         DoMovement();
-        
+
        
         // Clear the colorbuffer
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -243,7 +243,7 @@ int main()
         glm::mat4 view = camera.GetViewMatrix();
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        
+
         if (isSun) {
             glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.3f, 0.3f, 0.3f); 
             glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 1.0f, 0.9f, 0.8f); 
@@ -272,13 +272,13 @@ int main()
         glBindVertexArray(VAO);
         red_dog.Draw(lightingShader);
         //glDrawArrays(GL_TRIANGLES, 0, 36);
-
+        
         // Basketball hoop
         model = glm::translate(model, glm::vec3(0.0f, -0.4f, -2.0f));
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
         basketball_hoop.Draw(lightingShader);
-        
+
         // Park Brench
         model = glm::translate(model, glm::vec3(4.0f, 0.6f, 4.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -313,7 +313,7 @@ int main()
         lightingShader.Use();
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        
+
         if (isSun) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, sunTexture);
@@ -327,8 +327,8 @@ int main()
         else {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, moonTexture);
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, lightPos + movelightPos);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos + movelightPos);
             model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
             glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
             moon.Draw(lightingShader);
@@ -445,5 +445,3 @@ void MouseCallback(GLFWwindow* window, double xPos, double yPos)
 
     camera.ProcessMouseMovement(xOffset, yOffset);
 }
-
-

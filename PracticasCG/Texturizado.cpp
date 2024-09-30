@@ -1,7 +1,7 @@
 /*
 	Práctica 6: Texturizado
 	Amanda Balderas Arias
-	Fecha: 
+	Fecha de entreg: Domingo 22 de Septiembre 2024
 */
 #include <iostream>
 #include <cmath>
@@ -113,18 +113,35 @@ int main()
 		-0.5f,  0.5f, 0.0f,    1.0f, 1.0f,1.0f,		0.0f,0.5f, // vertice supeior izquierdo   3
 		
 		// TRES
-		-0.5f, -0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.25f, // vertice inferior izquierdo 4
-		0.5f, -0.5f, -1.0f,	   1.0f, 1.0f,1.0f,		0.75f,0.25f, // vertice inferior derecho  5
-		0.5f,  0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    0.75f,0.5f, // vertice superior derecho   6
-		-0.5f,  0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice supeior izquierdo   7
+		-0.5f, -0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.75f,0.25f, // vertice inferior izquierdo 4
+		0.5f, -0.5f, -1.0f,	   1.0f, 1.0f,1.0f,		0.75f,0.5f, // vertice inferior derecho    5
+		0.5f,  0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice superior derecho     6
+		-0.5f,  0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.25f, // vertice supeior izquierdo   7
 		
 		// DOS
 
-		0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,	    0.25f,0.25f, // vertice inferior izquierdo 8
-		0.5f, 0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.5f,0.25f, // vertice inferior derecho    9
-		0.5f, 0.5f, -1.0f,     1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice superior derecho     10
-		0.5f, -0.5f, -1.0f,      1.0f, 1.0f,1.0f,	    0.25f,0.5f, // vertice supeior izquierdo   11
+		0.5f, -0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    0.25f,0.5f, // vertice inferior izquierdo 8
+		0.5f, 0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.25f,0.25f, // vertice inferior derecho  9
+		0.5f, 0.5f, -1.0f,     1.0f, 1.0f,1.0f,	    0.5f,0.25f, // vertice superior derecho   10
+		0.5f, -0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice supeior izquierdo   11
 
+		// CUATRO
+		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,	    0.75f,0.25f, // vertice inferior izquierdo 12
+		-0.5f, 0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		1.0f,0.25f, // vertice inferior derecho    13
+		-0.5f, 0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    1.0f,0.5f, // vertice superior derecho     14
+		-0.5f, -0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.75f,0.5f, // vertice supeior izquierdo   15
+
+		// SEIS
+		-0.5f, 0.5f, 0.0f,     1.0f, 1.0f,1.0f,	    0.5f,0.5f, // vertice inferior izquierdo   16
+		0.5f, 0.5f, 0.0f,	   1.0f, 1.0f,1.0f,		0.75f,0.5f, // vertice inferior derecho    17
+		0.5f, 0.5f, -1.0f,     1.0f, 1.0f,1.0f,	    0.75f,0.75f, // vertice superior derecho   18
+		-0.5f, 0.5f, -1.0f,    1.0f, 1.0f,1.0f,	    0.5f,0.75f, // vertice supeior izquierdo   19
+
+		// CINCO
+		-0.5f, -0.5f, -1.0f,   1.0f, 1.0f,1.0f,	    0.5f,0.0f, // vertice inferior izquierdo   20
+		0.5f, -0.5f, -1.0f,	   1.0f, 1.0f,1.0f,		0.75f,0.0f, // vertice inferior derecho    21
+		0.5f, 0-.5f, 0.0f,     1.0f, 1.0f,1.0f,	    0.75f,0.25f, // vertice superior derecho   22
+		-0.5f, -0.5f, 0.0f,    1.0f, 1.0f,1.0f,	    0.5f,0.25f, // vertice supeior izquierdo   23
 	};
 
 	GLuint indices[] =
@@ -135,12 +152,24 @@ int main()
 		1,2,3,
 		
 		// TRES
-		4,5,7,
-		5,6,7,
+		4,7,5,
+		5,7,6,
 
 		// DOS
-		8,9,11,
-		9,10,11,
+		8,11,9,
+		9,11,10,
+
+		// CUATRO
+		12,14,15,
+		12,13,14,
+
+		// SEIS
+		16,19,18,
+		18,17,16,
+
+		// CINCO
+		20,21,23,
+		21,22,23,
 	
 	};
 
@@ -235,7 +264,7 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		// Draw the light object (using light's vertex attributes)
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 18 , GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 36 , GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// Swap the screen buffers

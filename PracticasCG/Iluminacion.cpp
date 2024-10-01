@@ -1,5 +1,5 @@
-/*
-    Práctica 7: Materiales e Iluminación 1
+ï»¿/*
+    Prï¿½ctica 7: Materiales e Iluminaciï¿½n 1
     Amanda Balderas Arias
     Fecha de entrega: Domingo 29 Septiembre 2024
 
@@ -197,7 +197,7 @@ int main()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 
-    
+
 
     image = stbi_load("Models/Texture_albedo.jpg", &textureWidth, &textureHeight, &nrChannels, 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureWidth, textureHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -228,12 +228,12 @@ int main()
         glfwPollEvents();
         DoMovement();
 
-       
+
         // Clear the colorbuffer
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        
+
         lightingShader.Use();
         GLint lightPosLoc = glGetUniformLocation(lightingShader.Program, "light.position");
         GLint viewPosLoc = glGetUniformLocation(lightingShader.Program, "viewPos");
@@ -245,21 +245,21 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
         if (isSun) {
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.3f, 0.3f, 0.3f); 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 1.0f, 0.9f, 0.8f); 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 0.9f); 
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.3f, 0.3f, 0.3f);
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 1.0f, 0.9f, 0.8f);
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 1.0f, 1.0f, 0.9f);
 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.ambient"), 1.0f, 1.0f, 1.0f); 
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.ambient"), 1.0f, 1.0f, 1.0f);
             glUniform3f(glGetUniformLocation(lightingShader.Program, "material.diffuse"), 0.9f, 0.9f, 0.9f);
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.specular"), 0.5f, 0.5f, 0.5f); 
-            glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f); 
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.specular"), 0.5f, 0.5f, 0.5f);
+            glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f);
         }
         else {
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.15f, 0.15f, 0.25f); 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 0.4f, 0.4f, 0.6f); 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 0.5f, 0.5f, 0.7f); 
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.ambient"), 0.15f, 0.15f, 0.25f);
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.diffuse"), 0.4f, 0.4f, 0.6f);
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "light.specular"), 0.5f, 0.5f, 0.7f);
 
-            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.ambient"), 0.4f, 0.4f, 0.5f); 
+            glUniform3f(glGetUniformLocation(lightingShader.Program, "material.ambient"), 0.4f, 0.4f, 0.5f);
             glUniform3f(glGetUniformLocation(lightingShader.Program, "material.diffuse"), 0.5f, 0.5f, 0.7f);
             glUniform3f(glGetUniformLocation(lightingShader.Program, "material.specular"), 0.5f, 0.5f, 0.5f);
             glUniform1f(glGetUniformLocation(lightingShader.Program, "material.shininess"), 32.0f);
@@ -272,7 +272,7 @@ int main()
         glBindVertexArray(VAO);
         red_dog.Draw(lightingShader);
         //glDrawArrays(GL_TRIANGLES, 0, 36);
-        
+
         // Basketball hoop
         model = glm::translate(model, glm::vec3(0.0f, -0.4f, -2.0f));
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -327,8 +327,8 @@ int main()
         else {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, moonTexture);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos + movelightPos);
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, lightPos + movelightPos);
             model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
             glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
             moon.Draw(lightingShader);
@@ -413,7 +413,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 
     if (keys[GLFW_KEY_O])
     {
-        if (lightAngle < PI) { 
+        if (lightAngle < PI) {
             lightAngle += lightSpeed * deltaTime;
         }
         isSun = true;
@@ -422,7 +422,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
     if (keys[GLFW_KEY_L])
     {
         if (lightAngle > 0) {
-            lightAngle -= lightSpeed * deltaTime; 
+            lightAngle -= lightSpeed * deltaTime;
         }
         isSun = false;
     }

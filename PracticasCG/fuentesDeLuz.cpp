@@ -160,10 +160,22 @@ int main()
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 	
-	Model Dog((char*)"Models/ball.obj");
-	Model Piso((char*)"Models/piso.obj");
-	Model Cube((char*)"Models/cube/956910a854f3_transparent_cube__3.obj");
+	Model ball((char*)"Models/ball.obj");
+	Model floor((char*)"Models/piso.obj");
+	Model cube((char*)"Models/cube/956910a854f3_transparent_cube__3.obj");
 
+	// Scenario
+	Model dog((char*)"Models/RedDog.obj");
+	Model basketball_hoop((char*)"Models/basketball_hoop/uploads_files_5230575_Basketball.obj");
+	Model park_brench((char*)"Models/park_brench/e9a75bc272c0_park_brench__3d_ass.obj");
+	Model sandbox((char*)"Models/sandbox/f9da2feda595_sandbox__3d_asset_0.obj");
+	Model swings((char*)"Models/swings/dcfd195f07b9_swings__3d_asset_0_.obj");
+	Model slide_for_kids((char*)"Models/slide_for_kids/047997f0b1eb_slide_for_kids__3d_.obj");
+
+	// Lamps
+	Model torch((char*)"Models/torch/95c7a63c7187_torch__3d_asset_0_g.obj"); 
+	Model floorLamp((char*)"Models/floor_lamp/84e404daac54_floor_lamp__3d_asse.obj");
+	Model ceilingLamp((char*)"Models/ceiling_lamp/c75c8e215357_ceiling_lamp__3d_as.obj");
 
 
 	// First, set the container's VAO (and VBO)
@@ -273,6 +285,15 @@ int main()
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].linear"), 0.0f);
 		glUniform1f(glGetUniformLocation(lightingShader.Program, "pointLights[3].quadratic"), 0.0f);
 
+		/*
+		¿Qué se hace?
+		1. Cargar el modelo del jardín de niños 
+		2. Mover las tres luces y ponerlas en diferentes posiciones
+		3. Con una tecla tienen que cambiar las intensidades de las luces
+		4. Cargarles un modelo diferente a cada una de las luces
+		
+		*/
+
 		// SpotLight
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.position"), camera.GetPosition().x, camera.GetPosition().y, camera.GetPosition().z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "spotLight.direction"), camera.GetFront().x, camera.GetFront().y, camera.GetFront().z);
@@ -301,28 +322,65 @@ int main()
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-
 		glm::mat4 model(1);
 
-	
-
-		//Carga de modelo 
+		// Carga de modelos
         view = camera.GetViewMatrix();	
 		model = glm::mat4(1);
+		model = glm::translate(model, glm::vec3(0.0f, 0.9f, 0.0f));
+		model = glm::scale(model, glm::vec3(4.0f, 4.0f, 4.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		Piso.Draw(lightingShader);
+		floor.Draw(lightingShader);
+		
+		// Dog
+		model = glm::mat4(1);
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		dog.Draw(lightingShader);
+		
+		// Basketball hoop
+		model = glm::translate(model, glm::vec3(0.0f, -0.4f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		basketball_hoop.Draw(lightingShader);
 
+		// Park Brench
+		model = glm::translate(model, glm::vec3(4.0f, 0.6f, 4.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2.5f, 2.5f, 2.5f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		park_brench.Draw(lightingShader);
 
-	
+		// Sandbox
+		model = glm::translate(model, glm::vec3(0.0f, -0.2f, -3.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		sandbox.Draw(lightingShader);
+		// Swings
+		model = glm::translate(model, glm::vec3(0.0f, 0.4f, -2.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.5f, 1.5f, 1.5f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		swings.Draw(lightingShader);
+
+		// Slide for kids
+		model = glm::translate(model, glm::vec3(0.0f, -0.1f, 2.0f));
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+		glUniformMatrix4fv(glGetUniformLocation(lightingShader.Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		slide_for_kids.Draw(lightingShader);
+
+		/*
 		model = glm::mat4(1);
 		glEnable(GL_BLEND);//Avtiva la funcionalidad para trabajar el canal alfa
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
-	    Cube.Draw(lightingShader);
+		ball.Draw(lightingShader);
 		glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
-	
+		*/
 
 		// Also draw the lamp object, again binding the appropriate shader
 		lampShader.Use();
@@ -346,7 +404,8 @@ int main()
 			model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glBindVertexArray(VAO);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			torch.Draw(lampShader);
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 		glBindVertexArray(0);
 

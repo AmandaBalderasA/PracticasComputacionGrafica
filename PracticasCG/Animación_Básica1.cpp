@@ -1,3 +1,9 @@
+ï»¿/*
+	Prï¿½ctica 9: AnimaciÃ³n BÃ¡sica
+	Amanda Balderas Arias
+	Fecha de entrega: Lunes 14 Octubre 2024
+*/
+
 #include <iostream>
 #include <cmath>
 
@@ -44,11 +50,12 @@ bool firstMouse = true;
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 bool active;
 
+
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
 	glm::vec3(0.0f,2.0f, 0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f),
-	glm::vec3(0.0f,0.0f,  0.0f),
+	glm::vec3(0.0f,0.0f, 0.0f),
 	glm::vec3(0.0f,0.0f, 0.0f)
 };
 
@@ -99,23 +106,48 @@ float vertices[] = {
 
 
 glm::vec3 Light1 = glm::vec3(0);
-//Anim
-float rotBall = 0;
-bool AnimBall = false;
-float rotDog = 0;
-bool AnimDog = false;
 
-float tiempo = 0.0f;
-float velocidad = 0.01f;  // Velocidad de cambio de tiempo
-float A = 1.0f;           // Coeficiente de la parábola (simula la gravedad)
-float B = 1.0f;           // Velocidad inicial en Y (puedes ajustarla)
-float C = 0.0f;           // Altura inicial en Y (es cero, según tu petición)
-float posicionX = -1.0f;  // Posición inicial en X (comienza desde la izquierda)
-float posicionY = 0.0f;
+// Ball animation
+bool AnimBall = false;
+float rotBall = 0;
+
+// Dog animation
+bool AnimDog = false;
+float rotDog = 0;
+
+// Up and down Ball movement
+float radius = 2.0f;
+float ballY = 0.0f;
+bool movingUp = false;
+
+// Ball movement
+float ballTime = 0.0f;
+float speed = 0.001f;
+float amplitude = 0.5f;
+float frecuency = 1.0f;
+
+// Dog Jumping
+float dogTime = 0.0f;
+float dogSpeed = 0.005f;
+float dogAmplitude = 0.2f;
+float dogFrecuency = 1.5f;
 
 // Deltatime
 GLfloat deltaTime = 0.0f;	// Time between current frame and last frame
 GLfloat lastFrame = 0.0f;  	// Time of last frame
+
+float NormalizeAngle(float angle) {
+	angle = fmod(angle, 360.0f); 
+	if (angle < 0) {
+		angle += 360.0f;
+	}
+	return angle;
+}
+
+bool AnglesAreClose(float angle1, float angle2, float tolerance) {
+	float diff = fabs(NormalizeAngle(angle1) - NormalizeAngle(angle2));
+	return (diff < tolerance || fabs(360.0f - diff) < tolerance);
+}
 
 int main()
 {
@@ -129,7 +161,7 @@ int main()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);*/
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Animacion basica", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Animacion basica - Amanda", nullptr, nullptr);
 
 	if (nullptr == window)
 	{
@@ -244,7 +276,37 @@ int main()
 		lightColor.y= abs(sin(glfwGetTime() *Light1.y));
 		lightColor.z= sin(glfwGetTime() *Light1.z);
 
+		float yposBall = 0.0f;	
+		float yposDog = 0.0f;
+		float dogAngle = 0.0f;
+		float tolerance = 3.0f;
+		float normalizedRotBall = NormalizeAngle(rotBall);
+		float normalizedRotDog = NormalizeAngle(rotDog);
+		float distance = 0.0f;
+
+		ballTime += speed;
 		
+		// Ball Senoidal Movement
+		if (AnimBall) {
+			yposBall = amplitude * sin(2 * 3.1416 * frecuency * ballTime);
+		}
+		else {
+			yposBall = 0.0f;
+		}
+
+		dogTime += dogSpeed;
+
+		printf("DISTANCE: %f\n", distance);
+		if (AnglesAreClose(rotBall, rotDog, tolerance)) {
+			dogAmplitude = yposBall;
+			yposDog = dogAmplitude * sin(dogFrecuency * dogTime);
+			dogAngle = -25.0f;
+			if ((yposDog < 0) || (AnimDog == false)) {
+				yposDog = 0;
+				dogAngle = 0.0f;
+			}
+			ballTime = 0.0f;
+		}
 
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].position"), pointLightPositions[0].x, pointLightPositions[0].y, pointLightPositions[0].z);
 		glUniform3f(glGetUniformLocation(lightingShader.Program, "pointLights[0].ambient"), lightColor.x,lightColor.y, lightColor.z);
@@ -298,8 +360,10 @@ int main()
 		model = glm::mat4(1);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
-		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotDog), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, yposDog, 0.0f));
+		model = glm::rotate(model, glm::radians(dogAngle), glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		Dog.Draw(lightingShader);
 		
@@ -308,9 +372,12 @@ int main()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 1);
+		model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotBall), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, yposBall, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	    Ball.Draw(lightingShader); 
+		
 		glDisable(GL_BLEND);  //Desactiva el canal alfa 
 		glBindVertexArray(0);
 	
@@ -456,26 +523,31 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	}
 }
 void Animation() {
-	if (AnimBall)
+	if (AnimBall) {
+		rotBall -= 0.01f;
+		printf("rotball: %f\n", rotBall);
+	}
+	
+	if (AnimDog) {
+		rotDog += 0.01f;
+		printf("rotDog: %f\n", rotDog);
+	}
+	/*
 	{
-		rotBall -= 0.1f;
-		rotDog += 0.1f;
-		/*
-		tiempo += velocidad;
-		posicionY = (-A * tiempo * tiempo) + (tiempo * B) + C;
-		posicionX += velocidad;
-
-		if (posicionY < -1.0f) {
-			tiempo = 0.0f;
-			posicionX = -1.0f;
-		}
-		*/
 		//printf("%f", rotBall);
-	}
-	else
-	{
-		//rotBall = 0.0f;
-	}
+		if (movingUp) {
+			ballY += speed;
+			if (ballY >= 1.8f) {
+				movingUp = false;
+			}
+		}
+		else {
+			ballY -= speed;
+			if (ballY <= 0.0f) {
+				movingUp = true;
+			}
+		}
+	}*/
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)

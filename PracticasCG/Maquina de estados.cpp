@@ -1,3 +1,9 @@
+/*
+	Práctica 10: Animación por máquinas de estados
+	Amanda Balderas Arias
+	Fecha de entrega: Lunes 21 Octubre 2024
+*/
+
 #include <iostream>
 #include <cmath>
 
@@ -42,7 +48,7 @@ bool keys[1024];
 bool firstMouse = true;
 // Light attributes
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
-bool active;
+
 
 // Positions of the point lights
 glm::vec3 pointLightPositions[] = {
@@ -112,7 +118,9 @@ float tail = 0.0f;
 glm::vec3 dogPos (0.0f,0.0f,0.0f);
 float dogRot = 0.0f;
 bool step = false;
-
+bool active;
+bool activeDogRot = false;
+float centerTolerance = 0.12;
 
 
 // Deltatime
@@ -170,13 +178,13 @@ int main()
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
 	
 	//models
-	Model DogBody((char*)"Models/DogBody.obj");
-	Model HeadDog((char*)"Models/HeadDog.obj");
-	Model DogTail((char*)"Models/TailDog.obj");
-	Model F_RightLeg((char*)"Models/F_RightLegDog.obj");
-	Model F_LeftLeg((char*)"Models/F_LeftLegDog.obj");
-	Model B_RightLeg((char*)"Models/B_RightLegDog.obj");
-	Model B_LeftLeg((char*)"Models/B_LeftLegDog.obj");
+	Model DogBody((char*)"Models/modifiedDogBody/modDog_body.obj");
+	Model HeadDog((char*)"Models/modifiedDogBody/modHeadDog.obj");
+	Model DogTail((char*)"Models/modifiedDogBody/modTailDog.obj");
+	Model F_RightLeg((char*)"Models/modifiedDogBody/modF_RightLegDog.obj");
+	Model F_LeftLeg((char*)"Models/modifiedDogBody/modF_LeftLegDog.obj");
+	Model B_RightLeg((char*)"Models/modifiedDogBody/modB_RightLegDog.obj");
+	Model B_LeftLeg((char*)"Models/modifiedDogBody/modB_LeftLegDog.obj");
 	Model Piso((char*)"Models/piso.obj");
 	Model Ball((char*)"Models/ball.obj");
 
@@ -305,8 +313,21 @@ int main()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glUniform1i(glGetUniformLocation(lightingShader.Program, "transparency"), 0);
 		//Body
-		modelTemp= model = glm::translate(model, dogPos);
-		modelTemp= model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f));
+		modelTemp = model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+		modelTemp = model = glm::translate(model, dogPos);
+		if (activeDogRot == true) {
+			modelTemp= model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+		
+		// Detiene la primer rotacion
+		if (dogRot > 90.0f && dogPos.x < 1.2f && dogRot < 180.0f) {
+			activeDogRot = false;
+			dogRot = 90.0f;
+			printf("AQUI\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+		}
+
+
+		//modelTemp= model = glm::rotate(model, glm::radians(dogRot), glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 		DogBody.Draw(lightingShader);
 		
@@ -505,7 +526,7 @@ void KeyCallback(GLFWwindow *window, int key, int scancode, int action, int mode
 	}
 	if (keys[GLFW_KEY_B])
 	{
-		dogAnim =1;
+		dogAnim = !dogAnim;
 	}
 	
 }
@@ -524,10 +545,9 @@ void Animation() {
 	}
 	if (dogAnim == 1) {
 		if (!step) {
+			printf("CERO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			RLegs += 0.3f;
 			FLegs += 0.3f;
-			//head += 0.3f;
-			tail += 0.3f;
 			if (RLegs > 15.0f){
 				step = true;
 			}
@@ -535,21 +555,67 @@ void Animation() {
 		else {
 			RLegs -= 0.3f;
 			FLegs -= 0.3f;
-			//head -= 0.3f;
-			tail -= 0.3f;
 			if (RLegs < -15.0f) {
 				step = false;
 			}
 		}
 
-		dogPos.z += 0.001;
+		// Estado 1: Camina drecho hasta z = 1.5
+		if (dogPos.z < 1.5f && dogRot < 90.0f && activeDogRot == false) {
+			printf("UNO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			dogPos.z += 0.001;
+		}
 
-		if (dogPos.z > 2.0) {
+		// Estado 2: Primer giro 
+		if (dogPos.z > 1.5f && dogPos.x < 1.2f) {
+			printf("DOS\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			activeDogRot = true;
+			dogRot += 0.1;
+		}
+
+		// Estado 3: Camina derecho hasta x = 1.2
+		if (dogRot > 90.0f && dogPos.z > 1.5f && dogPos.x < 1.2f) {
+			printf("TRES\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			dogPos.x += 0.001;
+		}
+		
+		// Estado 4: Segundo giro
+		if (dogPos.x >= 1.2f && dogPos.z > 1.5f && dogRot > 90.0f && dogRot < 180.0f) {
+			printf("CUATRO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			activeDogRot = true;
+			dogRot += 0.1;
+			
+		}
+
+		if (dogRot >= 180.0f && dogRot < 270.0f && dogPos.x >= 1.2f && dogPos.z > -1.0f) {
+			printf("CINCO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			dogPos.z -= 0.001;
+		}
+
+		if (dogPos.z < -1.0f && dogRot < 270.0f) {
+			printf("SEIS\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			activeDogRot = true;
+			dogRot += 0.1f; 
+		}
+
+		if (dogRot > 270.0f && dogRot < 315.0f) {
+			printf("SIETE\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			activeDogRot = true;
+			dogRot += 0.1;
+		}
+
+		if (dogRot > 315.0f && dogPos.z != 0.0f && dogPos.x != 0.0f) {
+			printf("OCHO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
+			dogPos.x -= 0.001f;
+			dogPos.z += 0.001f;
+		}
+
+		if (dogRot > 315.0f && abs(dogPos.x) < centerTolerance && abs(dogPos.z) < centerTolerance) {
+			printf("NUEVE\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			dogAnim = 0;
 		}
+		
 	}
-	
-	
 }
 
 void MouseCallback(GLFWwindow *window, double xPos, double yPos)

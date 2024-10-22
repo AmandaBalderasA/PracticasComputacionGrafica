@@ -587,29 +587,34 @@ void Animation() {
 			
 		}
 
+		// Estado 5: Avanza en el eje z al fondo del cuadro
 		if (dogRot >= 180.0f && dogRot < 270.0f && dogPos.x >= 1.2f && dogPos.z > -1.0f) {
 			printf("CINCO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			dogPos.z -= 0.001;
 		}
 
+		// Estado 6: Activa la rotación 90 grados a la izquierda
 		if (dogPos.z < -1.0f && dogRot < 270.0f) {
 			printf("SEIS\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			activeDogRot = true;
 			dogRot += 0.1f; 
 		}
 
+		// Estado 7: Activa la rotación 45 grados a la izquierda para la diagonal
 		if (dogRot > 270.0f && dogRot < 315.0f) {
 			printf("SIETE\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			activeDogRot = true;
 			dogRot += 0.1;
 		}
 
+		// Estado 8: Camina hacia el centro
 		if (dogRot > 315.0f && dogPos.z != 0.0f && dogPos.x != 0.0f) {
 			printf("OCHO\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			dogPos.x -= 0.001f;
 			dogPos.z += 0.001f;
 		}
 
+		// Estado 9: Se detiene la animación en el centro
 		if (dogRot > 315.0f && abs(dogPos.x) < centerTolerance && abs(dogPos.z) < centerTolerance) {
 			printf("NUEVE\nx: %f, z: %f, dogRot: %f, activeDogRot: %s\n", dogPos.x, dogPos.z, dogRot, activeDogRot ? "true" : "false");
 			dogAnim = 0;

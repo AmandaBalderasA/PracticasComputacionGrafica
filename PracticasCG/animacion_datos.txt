@@ -1,0 +1,72 @@
+KeyFrame 1:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 2:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 3:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 4:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 5:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 6:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 7:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 8:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------
+KeyFrame 9:
+PosX: 0, PosY: 0, PosZ: 0
+RotDog: 0
+Head: 0
+LegIzq: 0, LegDer: 0
+LegIzqFront: 0, LegDerFront: 0
+BodyX: 0
+---------------------------------

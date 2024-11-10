@@ -266,7 +266,7 @@ int main()
 	// Define the viewport dimensions
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	LoadFromFile("animacion_datos.txt");
+//	LoadFromFile("animacion_datos.txt");
 
 	Shader lightingShader("Shader/lighting.vs", "Shader/lighting.frag");
 	Shader lampShader("Shader/lamp.vs", "Shader/lamp.frag");
@@ -526,7 +526,7 @@ int main()
 		glfwSwapBuffers(window);
 	}
 
-	SaveToFile("animacion_datos.txt");
+	//SaveToFile("animacion_datos.txt");
 
 
 	// Terminate GLFW, clearing any resources allocated by GLFW.
@@ -744,7 +744,7 @@ void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 		if (FrameIndex < MAX_FRAMES)
 		{
 			saveFrame();
-			SaveToFile("animacion_datos.txt");
+		//	SaveToFile("animacion_datos.txt");
 		}
 
 	}
